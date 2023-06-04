@@ -1,19 +1,35 @@
+--Deurlevel voor deze bepaalde deur. 0 is het hoogste (alleen bosses kunnen openen), 3 het laagste.
 local DeurLevel = 2
 
-local NamenFile = loadstring(game:HttpGet("https://raw.githubusercontent.com/JasonD157/BelovNamen/main/NamenTable"))
+--Tabel met namen van de gangleden, ingedeeld op bevoegdheid om deuren te openen. Via loadstring om efficiënt veranderingen in de hierarchie en gekickte leden snel te verwijderen.
+local NamenTable = loadstring(game:HttpGet("https://raw.githubusercontent.com/JasonD157/BelovNamen/main/NamenTable"))
 
+--Functie die de tabel vergelijkt met de speler die de ProximityPrompt heeft geactiveerd.
 local function Check(Name, DeurLevel)
-  for _,CheckName in NamenFile["Level "..tostring(DeurLevel)] do
+  --Gaat alle namen in het niveau waar de deur op staat na
+  for _,CheckName in NamenTable["Level "..tostring(DeurLevel)] do
     if Name = CheckName then
       return true
     end
   end
-  if DeurLevel + 1 <= NamenFile# then
-    NewDeurLevel = DeurLevel + 1
+  
+  --Kijkt of er ook gechecked moet worden op rangen er boven (bosses, Level 0 access, kunnen ook door level 3 deuren).
+  if not DeurLevel - 1 < 0 then
+    NewDeurLevel = DeurLevel - 1
+    --Checkt het level erboven (recursive)
     if Check(Name, NewDeurLevel) then
       return true
     end
   end
+  
+  --Als de spelersnaam niet is gevonden in de tabel, false returnen.
   return false
 end
-ucft  
+
+if Check() then
+  --Do stuff (deur openen)
+else
+  --HIER NOTIFY SYSTEEM VAN FIVER TOEVOEGEN
+  notify "Je hebt niet de goede sleutels om deze deur te openen."
+end
+
