@@ -1,1 +1,19 @@
+local DeurLevel = 2
 
+local NamenFile = loadstring(game:HttpGet("https://raw.githubusercontent.com/JasonD157/BelovNamen/main/NamenTable"))
+
+local function Check(Name, DeurLevel)
+  for _,CheckName in NamenFile["Level "..tostring(DeurLevel)] do
+    if Name = CheckName then
+      return true
+    end
+  end
+  if DeurLevel + 1 <= NamenFile# then
+    NewDeurLevel = DeurLevel + 1
+    if Check(Name, NewDeurLevel) then
+      return true
+    end
+  end
+  return false
+end
+ucft  
